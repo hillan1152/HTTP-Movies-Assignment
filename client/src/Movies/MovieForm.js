@@ -35,7 +35,7 @@ const MovieForm = (props) => {
     const updateSubmit = e => {
         e.preventDefault();
         axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, input)
-            .then(res => console.log('This is submit', res) & props.history.push(`/`) & props.savedList(res.data))
+            .then(res => console.log('This is submit', res) & props.history.push(`/`))
             .catch(err => console.log(err.response))
     }
 
