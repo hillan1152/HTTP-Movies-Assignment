@@ -21,7 +21,7 @@ export default class Movie extends React.Component {
 
   fetchMovie = id => {
     axios
-      .get(`http://localhost:5000/api/movies/${id}`)
+      .get(`http://localhost:5000/api/movies/${this.props.match.params.id}`)
       .then(res => this.setState({ movie: res.data }))
       .catch(err => console.log(err.response));
   };
@@ -42,7 +42,10 @@ export default class Movie extends React.Component {
         <div className="save-button" onClick={this.saveMovie}>
           Save
         </div>
-        <button className="button" onClick={() => this.props.history.push(`/update-movie/:id`)}>Edit Movie</button>
+        <div className="save-button" onClick={() => this.props.history.push(`/update-movie/${this.state.movie.id}`)}>
+          Edit
+        </div>
+        
       </div>
     );
   }

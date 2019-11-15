@@ -5,23 +5,27 @@ const initialItem = {
     title:'',
     director: '',
     metascore: 0,
-    stars: ''
+    stars: []
 }
 
 const MovieForm = (props) => {
     const [input, setInput] = useState(initialItem);
     
-    // console.log('Movie Form Pros', props)
+    console.log('Movie Form Props', props)
    useEffect(() => {
-       const itemToEdit = props.savedList.find(
-           movie => `${movie.id}` === props.match.params.id
-       )
-       if(itemToEdit) setInput(itemToEdit);
-   }, [props.savedList, props.match.params.id])
+        axios
+          .get(`http://localhost:5000/api/movies/${props.match.params.id}`)
+          .then(res => setInput(res.data))
+          .catch(err => console.log(err.response));
+   }, [])
 
 
     const handleChange = e => {
         e.persist();
+        let value = e.target.value;
+        if (e.target.name === 'stars') {
+            value = value.split(",")
+        }
         setInput({
             ...input,
             [e.target.name]:e.target.value
@@ -30,8 +34,8 @@ const MovieForm = (props) => {
 
     const updateSubmit = e => {
         e.preventDefault();
-        axios.put(`http://localhost:5000/api/movies/${input.id}`, input)
-            .then(res => console.log('This is submit', res))
+        axios.put(`http://localhost:5000/api/movies/${props.match.params.id}`, input)
+            .then(res => console.log('This is submit', res) & props.history.push(`/`) & props.savedList(res.data))
             .catch(err => console.log(err.response))
     }
 
